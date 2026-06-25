@@ -161,9 +161,34 @@ http://localhost:5000
 
 ---
 
+## Docker
+
+The application is containerized with Docker and exposed on port 5000.
+
+### Run with Docker
+
+Build the image:
+
+```bash
+docker build -t book-manager:1.0 .
+
+### Run the container:
+docker run -d --name book-manager-container -p 5000:5000 book-manager:1.0
+
+### Check the container:
+docker ps
+---
+
 ## Screenshots
 
-Screenshots will be added during project development.
+### Web application
+
+![Book Manager web application](Screenshots/webapp.png)
+
+
+### Docker container running
+
+![Book Manager running in Docker](Screenshots/docker.png)
 
 ---
 
