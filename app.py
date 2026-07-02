@@ -3,6 +3,17 @@ import sqlite3
 
 app = Flask(__name__)
 
+def init_db():
+    conn = sqlite3.connect("books.db")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS books (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            author TEXT NOT NULL
+        )
+    """)
+    conn.commit()
+    conn.close()
 
 def get_db_connection():
     conn = sqlite3.connect("books.db")
@@ -101,4 +112,5 @@ def update_book(book_id):
 
     return redirect("/")
 if __name__ == "__main__":
+    init_db()
     app.run(host="0.0.0.0", port=5000)
