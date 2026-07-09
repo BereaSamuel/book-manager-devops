@@ -23,6 +23,9 @@ The project also demonstrates **Docker containerization** and **Continuous Integ
 - Dynamic book counter
 - Docker containerization
 - Jenkins Continuous Integration
+- Jenkins Pipeline as Code
+- Automated application tests
+- Persistent SQLite storage using Docker Volumes
 
 ---
 
@@ -62,6 +65,8 @@ The project also demonstrates **Docker containerization** and **Continuous Integ
 - Docker containerization
 - Jenkins Continuous Integration
 - Persistent SQLite storage using Docker Volumes
+- Automated application testing
+- Jenkins Pipeline with automated testing and deployment
 
 ## Add Book
 
@@ -101,14 +106,16 @@ The application automatically displays the total number of books currently store
 
 # Project Structure
 
-```text
 book-manager/
 │
 ├── app.py
 ├── init_db.py
 ├── books.db
+├── test_app.py
 ├── Dockerfile
+├── Jenkinsfile
 ├── .dockerignore
+├── .gitignore
 ├── requirements.txt
 ├── README.md
 │
@@ -122,7 +129,9 @@ book-manager/
 └── Screenshots/
     ├── webapp.png
     ├── docker.png
-    └── jenkins-build.png
+    ├── jenkins-build.png
+    └── jenkins-pipeline.png
+    └── jenkins-pipeline2.png
 ```
 
 ---
@@ -242,19 +251,43 @@ Open the application deployed by Jenkins:
 ```
 http://localhost:5001
 ```
+## Automated Tests
+
+The project includes automated tests created with Python's built-in `unittest` framework.
+
+The tests verify that:
+
+- The home page loads successfully.
+- A new book can be added successfully.
+- The application returns the expected content.
+
+Run the tests locally:
+
+```bash
+python3 -m unittest test_app.py
+
 
 ---
 ## Jenkins Pipeline
 
-The Jenkins Pipeline automatically performs the following steps:
+The Jenkins Pipeline automates the Continuous Integration and deployment process.
+
+The pipeline performs the following steps:
 
 1. Checks out the source code from GitHub.
-2. Builds the Docker image.
-3. Stops and removes the previous container.
-4. Starts a new Docker container.
-5. Verifies that the application is running successfully.
+2. Installs the required Python dependencies.
+3. Runs automated tests using Python `unittest`.
+4. Builds the Docker image.
+5. Stops and removes the previous Docker container.
+6. Starts a new Docker container.
+7. Verifies that the application is running successfully.
 
-The application deployed by the Jenkins Pipeline is available on port `5002`.
+If an automated test fails, the pipeline stops and the application is not deployed.
+
+The application deployed by the Jenkins Pipeline is available at:
+
+```text
+http://localhost:5002
 
 ## Data Persistence
 
