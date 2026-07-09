@@ -26,7 +26,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 sh '''
-                    ddocker run -d \
+                    docker run -d \
 --name book-manager-pipeline-container \
 -p 5002:5000 \
 -v book-manager-data:/app/data \
