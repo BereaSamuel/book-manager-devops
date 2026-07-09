@@ -68,6 +68,7 @@ The project also demonstrates **Docker containerization** and **Continuous Integ
 - Persistent SQLite storage using Docker Volumes
 - Automated application testing
 - Jenkins Pipeline with automated testing and deployment
+- Automatic Jenkins Pipeline triggering using Poll SCM
 
 ## Add Book
 
@@ -271,7 +272,9 @@ python3 -m unittest test_app.py
 ---
 ## Jenkins Pipeline
 
-The Jenkins Pipeline automates the Continuous Integration and deployment process.
+The Jenkins Pipeline is automatically triggered after new changes are pushed to GitHub using Poll SCM.
+
+Jenkins checks the repository periodically and starts a new pipeline build when a new commit is detected.
 
 The pipeline performs the following steps:
 
