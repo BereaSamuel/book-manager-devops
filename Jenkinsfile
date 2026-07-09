@@ -9,9 +9,12 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh 'python3 -m unittest test_app.py'
-            }
-        }
+               sh '''
+                python3 -m pip install --user -r requirements.txt
+                python3 -m unittest test_app.py
+             '''
+             }
+        }         
 
         stage('Build Docker Image') {
             steps {
