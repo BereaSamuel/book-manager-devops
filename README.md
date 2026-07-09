@@ -61,6 +61,7 @@ The project also demonstrates **Docker containerization** and **Continuous Integ
 - Automatic database initialization
 - Docker containerization
 - Jenkins Continuous Integration
+- Persistent SQLite storage using Docker Volumes
 
 ## Add Book
 
@@ -255,6 +256,12 @@ The Jenkins Pipeline automatically performs the following steps:
 
 The application deployed by the Jenkins Pipeline is available on port `5002`.
 
+## Data Persistence
+
+The SQLite database is stored in a Docker named volume:
+
+```text
+book-manager-data
 
 # Screenshots
 
