@@ -26,10 +26,12 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 sh '''
-                    docker run -d \
-                    --name book-manager-pipeline-container \
-                    -p 5002:5000 \
-                    book-manager-pipeline:latest
+                    ddocker run -d \
+--name book-manager-pipeline-container \
+-p 5002:5000 \
+-v book-manager-data:/app/data \
+-e DATABASE_PATH=/app/data/books.db \
+book-manager-pipeline:latest
                 '''
             }
         }

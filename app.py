@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+import os
 
 app = Flask(__name__)
 
+DATABASE = os.getenv("DATABASE_PATH", "books.db")
+
 def init_db():
-    conn = sqlite3.connect("books.db")
+    conn = sqlite3.connect(DATABASE)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,7 +19,7 @@ def init_db():
     conn.close()
 
 def get_db_connection():
-    conn = sqlite3.connect("books.db")
+    conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
