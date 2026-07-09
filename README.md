@@ -1,196 +1,294 @@
-# Book Manager
+# 📚 Book Manager
 
 ## Project Description
 
-Book Manager is a web application developed using Python and Flask that allows users to manage a collection of books.
+Book Manager is a web application developed with **Python** and **Flask** that allows users to manage a collection of books.
 
-The application provides a simple interface for adding, viewing, updating and deleting books. All data is stored in a SQLite database.
+The application provides a simple interface for adding, viewing, editing, and deleting books. All data is stored in a **SQLite** database.
 
----
-
-## Current Project Status
-
-Current Phase: Application Development
-
-Completed:
-
-* Flask application setup
-* SQLite database integration
-* Add Book functionality
-* View Books functionality
-* Edit Book functionality
-* Delete Book functionality
-* Dynamic Book Counter
+The project also demonstrates **Docker containerization** and **Continuous Integration (CI)** using **Jenkins**.
 
 ---
 
-## Technologies Used
+# Current Project Status
 
-### Backend
+**Current Phase:** Continuous Integration (CI)
 
-* Python 3
-* Flask
+### Completed
 
-### Frontend
-
-* HTML5
-* CSS3
-
-### Database
-
-* SQLite
+- Flask web application
+- SQLite database integration
+- Automatic database initialization
+- CRUD operations (Create, Read, Update, Delete)
+- Dynamic book counter
+- Docker containerization
+- Jenkins Continuous Integration
 
 ---
 
-## Features
+# Technologies Used
 
-### Add Book
+## Backend
+
+- Python 3
+- Flask
+
+## Frontend
+
+- HTML5
+- CSS3
+
+## Database
+
+- SQLite
+
+## DevOps
+
+- Git
+- GitHub
+- Docker
+- Jenkins
+
+---
+
+# Features
+
+- Add new books
+- View all books
+- Edit existing books
+- Delete books
+- SQLite database integration
+- Automatic database initialization
+- Docker containerization
+- Jenkins Continuous Integration
+
+## Add Book
 
 Users can add a new book by providing:
 
-* Book Title
-* Author Name
+- Book Title
+- Author Name
 
-### View Books
+## View Books
 
 All books stored in the database are displayed on the main page.
 
-### Edit Book
+## Edit Book
 
 Users can update existing book information.
 
-### Delete Book
+## Delete Book
 
 Users can remove books from the collection.
 
-### Book Counter
+## Book Counter
 
 The application automatically displays the total number of books currently stored in the database.
 
 ---
 
-## CRUD Operations
+# CRUD Operations
 
-| Operation | Description         | Status    |
-| --------- | ------------------- | --------- |
-| Create    | Add a new book      | Completed |
-| Read      | Display all books   | Completed |
-| Update    | Edit existing books | Completed |
-| Delete    | Remove books        | Completed |
+| Operation | Description | Status |
+|----------|-------------|--------|
+| Create | Add a new book | ✅ Completed |
+| Read | Display all books | ✅ Completed |
+| Update | Edit existing books | ✅ Completed |
+| Delete | Remove books | ✅ Completed |
 
 ---
 
-## Project Structure
+# Project Structure
 
+```text
 book-manager/
-
+│
 ├── app.py
-
 ├── init_db.py
-
 ├── books.db
-
+├── Dockerfile
+├── .dockerignore
 ├── requirements.txt
-
 ├── README.md
-
+│
 ├── static/
-
-│ └── style.css
-
-└── templates/
-
-├── index.html
-
-└── edit.html
+│   └── style.css
+│
+├── templates/
+│   ├── index.html
+│   └── edit.html
+│
+└── Screenshots/
+    ├── webapp.png
+    ├── docker.png
+    └── jenkins-build.png
+```
 
 ---
 
-## Database
+# Database
 
-Database Engine:
+**Database Engine**
 
 SQLite
 
-Database File:
+**Database File**
 
+```
 books.db
+```
 
-Table:
+**Table**
 
+```
 books
+```
 
-Columns:
+### Columns
 
-* id
-* title
-* author
+- id
+- title
+- author
 
 ---
 
-## Installation
+# Installation
 
-Clone or download the project.
+Clone the repository:
 
-Install Flask:
+```bash
+git clone https://github.com/BereaSamuel/book-manager-devops.git
+cd book-manager-devops
+```
 
-pip3 install flask
+Install dependencies:
 
-Create the database:
-
-python3 init_db.py
+```bash
+pip3 install -r requirements.txt
+```
 
 Start the application:
 
+```bash
 python3 app.py
+```
 
 Open the application:
 
+```
 http://localhost:5000
+```
+
+> The SQLite database and the required table are automatically created on the first application startup.
 
 ---
 
-## Application Workflow
+# Application Workflow
 
-1. Open the application.
+1. Start the application.
 2. Add a new book.
 3. View all books.
-4. Edit book information.
+4. Edit existing books.
 5. Delete books.
 6. Changes are automatically saved in the SQLite database.
 
 ---
 
-## Docker
+# Docker
 
-The application is containerized with Docker and exposed on port 5000.
+The application is containerized using Docker.
 
-### Run with Docker
-
-Build the image:
+## Build the Docker image
 
 ```bash
 docker build -t book-manager:1.0 .
+```
 
-### Run the container:
+## Run the Docker container
+
+```bash
 docker run -d --name book-manager-container -p 5000:5000 book-manager:1.0
+```
 
-### Check the container:
+## Check running containers
+
+```bash
 docker ps
----
+```
 
-## Screenshots
+Open the application:
 
-### Web application
-
-![Book Manager web application](Screenshots/webapp.png)
-
-
-### Docker container running
-
-![Book Manager running in Docker](Screenshots/docker.png)
+```
+http://localhost:5000
+```
 
 ---
 
-## Author
-Samuel Berea
+# Jenkins Continuous Integration
+
+A Jenkins Freestyle Job is configured to automate the deployment process.
+
+The Jenkins job performs the following steps:
+
+1. Clone the project from GitHub.
+2. Build the Docker image.
+3. Stop the previous Docker container (if it exists).
+4. Start a new Docker container.
+5. Deploy the application on port **5001**.
+
+Open the application deployed by Jenkins:
+
+```
+http://localhost:5001
+```
+
+---
+## Jenkins Pipeline
+
+The Jenkins Pipeline automatically performs the following steps:
+
+1. Checks out the source code from GitHub.
+2. Builds the Docker image.
+3. Stops and removes the previous container.
+4. Starts a new Docker container.
+5. Verifies that the application is running successfully.
+
+The application deployed by the Jenkins Pipeline is available on port `5002`.
+
+
+# Screenshots
+
+## Web Application
+
+![Book Manager Web Application](Screenshots/webapp.png)
+
+## Docker Container Running
+
+![Docker Container Running](Screenshots/docker.png)
+
+## Jenkins Build
+
+![Jenkins Build](Screenshots/jenkins-build.png)
+
+## Jenkins Pipeline
+![Jenkins Pipeline Success](Screenshots/jenkins-pipeline.png)
+![Jenkins Pipeline Success](Screenshots/jenkins-pipeline2.png)
+---
+
+# Future Improvements
+
+- Jenkins Pipeline using Jenkinsfile
+- Docker Hub integration
+- Automated testing
+- GitHub Webhooks
+- Deployment to Kubernetes
+
+---
+
+# Author
+
+**Samuel Berea**
+
+GitHub:
+
+https://github.com/BereaSamuel
