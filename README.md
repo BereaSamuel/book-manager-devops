@@ -11,6 +11,7 @@ The project also demonstrates **Docker containerization** and **Continuous Integ
 ---
 
 # Current Project Status
+- Automatic pipeline triggering with Jenkins Poll SCM
 
 **Current Phase:** Continuous Integration (CI)
 
