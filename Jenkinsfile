@@ -7,6 +7,11 @@ pipeline {
                 echo 'Source code downloaded from GitHub'
             }
         }
+        stage('Run Tests') {
+            steps {
+                sh 'python3 -m unittest test_app.py'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -27,11 +32,11 @@ pipeline {
             steps {
                 sh '''
                     docker run -d \
---name book-manager-pipeline-container \
--p 5002:5000 \
--v book-manager-data:/app/data \
--e DATABASE_PATH=/app/data/books.db \
-book-manager-pipeline:latest
+                   --name book-manager-pipeline-container \
+                 -p 5002:5000 \
+                 -v book-manager-data:/app/data \
+                 -e DATABASE_PATH=/app/data/books.db \
+                 book-manager-pipeline:latest
                 '''
             }
         }
