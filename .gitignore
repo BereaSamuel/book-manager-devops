@@ -1,4 +1,10 @@
 __pycache__/
 *.pyc
+
 .vscode/
+
 books.db
+
+*.log
+
+.env

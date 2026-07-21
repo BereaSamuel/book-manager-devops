@@ -1,32 +1,59 @@
-# 📚 Book Manager
+# 📚 Book Manager - DevOps Project
 
-## Project Description
+## Project Overview
 
-Book Manager is a web application developed with **Python** and **Flask** that allows users to manage a collection of books.
+Book Manager is a web application developed using **Python** and **Flask** for managing a collection of books.
 
-The application provides a simple interface for adding, viewing, editing, and deleting books. All data is stored in a **SQLite** database.
+The application allows users to add, edit, delete and view books stored in a **SQLite** database.
 
-The project also demonstrates **Docker containerization** and **Continuous Integration (CI)** using **Jenkins**.
+This project demonstrates the implementation of a complete DevOps workflow, including:
+
+- Source Control using Git and GitHub
+- Docker Containerization
+- Continuous Integration & Continuous Deployment with Jenkins
+- Kubernetes Deployment using Minikube
+- Monitoring with Prometheus and Grafana
+- Application Logging
+- Automated Testing
 
 ---
 
-# Current Project Status
-- Automatic pipeline triggering with Jenkins Poll SCM
+# Project Architecture
 
-**Current Phase:** Continuous Integration (CI)
+```
+Developer
+    │
+    ▼
+GitHub Repository
+    │
+    ▼
+Jenkins CI/CD Pipeline
+    │
+    ├── Checkout Source Code
+    ├── Install Dependencies
+    ├── Run Unit Tests
+    ├── Build Docker Image
+    ├── Deploy Docker Container
+    ▼
+Docker
+    │
+    ▼
+Kubernetes (Minikube)
+    │
+    ▼
+Prometheus
+    │
+    ▼
+Grafana Dashboard
+```
 
-### Completed
+---
 
-- Flask web application
-- SQLite database integration
-- Automatic database initialization
-- CRUD operations (Create, Read, Update, Delete)
-- Dynamic book counter
-- Docker containerization
-- Jenkins Continuous Integration
-- Jenkins Pipeline as Code
-- Automated application tests
-- Persistent SQLite storage using Docker Volumes
+# Project Status
+
+✅ Project Completed
+
+All requested DevOps components have been successfully implemented and validated.
 
 ---
 
@@ -46,80 +73,58 @@ The project also demonstrates **Docker containerization** and **Continuous Integ
 
 - SQLite
 
-## DevOps
+## DevOps Tools
 
 - Git
 - GitHub
 - Docker
 - Jenkins
+- Kubernetes
+- Minikube
+- Helm
+- Prometheus
+- Grafana
 
 ---
 
-# Features
+# Application Features
+
+The application provides the following functionality:
 
 - Add new books
 - View all books
 - Edit existing books
 - Delete books
-- SQLite database integration
-- Automatic database initialization
-- Docker containerization
-- Jenkins Continuous Integration
-- Persistent SQLite storage using Docker Volumes
-- Automated application testing
-- Jenkins Pipeline with automated testing and deployment
-- Automatic Jenkins Pipeline triggering using Poll SCM
-
-## Add Book
-
-Users can add a new book by providing:
-
-- Book Title
-- Author Name
-
-## View Books
-
-All books stored in the database are displayed on the main page.
-
-## Edit Book
-
-Users can update existing book information.
-
-## Delete Book
-
-Users can remove books from the collection.
-
-## Book Counter
-
-The application automatically displays the total number of books currently stored in the database.
-
----
-
-# CRUD Operations
-
-| Operation | Description | Status |
-|----------|-------------|--------|
-| Create | Add a new book | ✅ Completed |
-| Read | Display all books | ✅ Completed |
-| Update | Edit existing books | ✅ Completed |
-| Delete | Remove books | ✅ Completed |
+- Automatic SQLite database initialization
+- Persistent data storage using Docker Volumes
+- Automated testing
+- Docker container deployment
+- Kubernetes deployment
+- Monitoring with Prometheus
+- Custom Grafana Dashboard
+- Kubernetes application logging
+- Automated Jenkins Pipeline
 
 ---
 
 # Project Structure
 
+```
 book-manager/
 │
 ├── app.py
 ├── init_db.py
-├── books.db
 ├── test_app.py
+├── requirements.txt
 ├── Dockerfile
 ├── Jenkinsfile
-├── .dockerignore
-├── .gitignore
-├── requirements.txt
 ├── README.md
+├── .gitignore
+├── .dockerignore
+│
+├── kubernetes/
+│   ├── deployment.yaml
+│   └── service.yaml
 │
 ├── static/
 │   └── style.css
@@ -129,203 +134,296 @@ book-manager/
 │   └── edit.html
 │
 └── Screenshots/
-    ├── webapp.png
-    ├── docker.png
-    ├── jenkins-build.png
-    └── jenkins-pipeline.png
-    └── jenkins-pipeline2.png
 ```
 
 ---
 
 # Database
 
-**Database Engine**
+The application uses a lightweight **SQLite** database.
 
-SQLite
-
-**Database File**
+Database file:
 
 ```
 books.db
 ```
 
-**Table**
+Table:
 
 ```
 books
 ```
 
-### Columns
+Columns:
 
 - id
 - title
 - author
 
+The database is automatically created during the first application startup if it does not already exist.
+
 ---
 
 # Installation
 
-Clone the repository:
+Clone the repository
 
 ```bash
 git clone https://github.com/BereaSamuel/book-manager-devops.git
+
 cd book-manager-devops
 ```
 
-Install dependencies:
+Install dependencies
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
-Start the application:
+Run the application
 
 ```bash
 python3 app.py
 ```
 
-Open the application:
+Application URL
 
 ```
 http://localhost:5000
 ```
 
-> The SQLite database and the required table are automatically created on the first application startup.
-
 ---
 
-# Application Workflow
+# Docker Containerization
 
-1. Start the application.
-2. Add a new book.
-3. View all books.
-4. Edit existing books.
-5. Delete books.
-6. Changes are automatically saved in the SQLite database.
-
----
-
-# Docker
-
-The application is containerized using Docker.
-
-## Build the Docker image
+Build the Docker image
 
 ```bash
 docker build -t book-manager:1.0 .
 ```
 
-## Run the Docker container
+Run the container
 
 ```bash
-docker run -d --name book-manager-container -p 5000:5000 book-manager:1.0
+docker run -d \
+--name book-manager-container \
+-p 5000:5000 \
+-v book-manager-data:/app/data \
+-e DATABASE_PATH=/app/data/books.db \
+book-manager:1.0
 ```
 
-## Check running containers
+Verify the running container
 
 ```bash
 docker ps
 ```
 
-Open the application:
-
-```
-http://localhost:5000
-```
+The SQLite database is stored inside a Docker Volume, ensuring that all data remains available even after restarting the container.
 
 ---
 
-# Jenkins Continuous Integration
+# Jenkins CI/CD Pipeline
 
-A Jenkins Freestyle Job is configured to automate the deployment process.
+The Jenkins pipeline performs the following stages automatically:
 
-The Jenkins job performs the following steps:
+1. Checkout Source Code
+2. Install Python Dependencies
+3. Execute Automated Tests
+4. Build Docker Image
+5. Stop Previous Container
+6. Deploy Updated Container
+7. Verify Successful Deployment
 
-1. Clone the project from GitHub.
-2. Build the Docker image.
-3. Stop the previous Docker container (if it exists).
-4. Start a new Docker container.
-5. Deploy the application on port **5001**.
+If any automated test fails, deployment is immediately stopped.
 
-Open the application deployed by Jenkins:
+---
 
-```
-http://localhost:5001
-```
-## Automated Tests
+# Automated Testing
 
-The project includes automated tests created with Python's built-in `unittest` framework.
+The project uses Python's built-in **unittest** framework.
 
-The tests verify that:
+Implemented tests verify:
 
-- The home page loads successfully.
-- A new book can be added successfully.
-- The application returns the expected content.
+- Homepage availability
+- Book creation
+- HTTP response validation
 
-Run the tests locally:
+Run tests manually
 
 ```bash
 python3 -m unittest test_app.py
-
+```
 
 ---
-## Jenkins Pipeline
 
-The Jenkins Pipeline is automatically triggered after new changes are pushed to GitHub using Poll SCM.
+# Kubernetes Deployment
 
-Jenkins checks the repository periodically and starts a new pipeline build when a new commit is detected.
+The application is deployed inside a local Kubernetes cluster using **Minikube**.
 
-The pipeline performs the following steps:
+Deployment resources include:
 
-1. Checks out the source code from GitHub.
-2. Installs the required Python dependencies.
-3. Runs automated tests using Python `unittest`.
-4. Builds the Docker image.
-5. Stops and removes the previous Docker container.
-6. Starts a new Docker container.
-7. Verifies that the application is running successfully.
+- Deployment
+- NodePort Service
 
-If an automated test fails, the pipeline stops and the application is not deployed.
+Deploy the application
 
-The application deployed by the Jenkins Pipeline is available at:
+```bash
+kubectl apply -f kubernetes/
+```
 
-```text
-http://localhost:5002
+Verify deployment
 
-## Data Persistence
+```bash
+kubectl get deployments
 
-The SQLite database is stored in a Docker named volume:
+kubectl get pods
 
-```text
-book-manager-data
+kubectl get services
+```
+
+Open the application
+
+```bash
+minikube service book-manager-service
+```
+
+The application is exposed through a Kubernetes NodePort Service.
+
+---
+
+# Monitoring
+
+Monitoring is implemented using the **kube-prometheus-stack** Helm chart.
+
+Installed monitoring components:
+
+- Prometheus
+- Grafana
+- Alertmanager
+- kube-state-metrics
+- Node Exporter
+
+Installation
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+helm repo update
+
+helm install monitoring prometheus-community/kube-prometheus-stack
+```
+
+Prometheus continuously collects metrics from the Kubernetes cluster and running containers.
+
+---
+
+# Grafana Dashboard
+
+A custom Grafana dashboard was created specifically for monitoring the Book Manager application.
+
+Dashboard panels include:
+
+- CPU Usage
+- Working Memory Usage
+- Total CPU Time
+- RSS Memory Usage
+
+The dashboard refreshes automatically every 10 seconds using metrics collected by Prometheus.
+
+---
+
+# Application Logging
+
+Application logs are collected directly from the running Kubernetes Pod.
+
+View logs
+
+```bash
+kubectl logs deployment/book-manager
+```
+
+View resource usage
+
+```bash
+kubectl top pods
+
+kubectl top nodes
+```
+
+Logs include incoming HTTP requests, application events and Kubernetes runtime information.
+
+---
+
+# DevOps Workflow
+
+```
+Developer
+      │
+      ▼
+GitHub Repository
+      │
+      ▼
+Jenkins Pipeline
+      │
+      ▼
+Docker Image
+      │
+      ▼
+Kubernetes Deployment
+      │
+      ▼
+Prometheus Monitoring
+      │
+      ▼
+Grafana Dashboard
+```
+
+---
+
+# Project Results
+
+This project successfully demonstrates:
+
+- Source Control using Git and GitHub
+- Automated CI/CD Pipeline
+- Docker Containerization
+- Persistent Data Storage
+- Kubernetes Deployment
+- Prometheus Monitoring
+- Grafana Visualization
+- Kubernetes Logging
+- Automated Unit Testing
+
+---
 
 # Screenshots
 
-## Web Application
+The **Screenshots** directory contains images illustrating every major stage of the project:
 
-![Book Manager Web Application](Screenshots/webapp.png)
+- Flask Web Application
+- Docker Container
+- Jenkins Build
+- Jenkins Pipeline Execution
+- Kubernetes Deployment
+- Kubernetes Pods and Services
+- Prometheus Monitoring
+- Grafana Dashboard
+- Kubernetes Application Logs
 
-## Docker Container Running
-
-![Docker Container Running](Screenshots/docker.png)
-
-## Jenkins Build
-
-![Jenkins Build](Screenshots/jenkins-build.png)
-
-## Jenkins Pipeline
-![Jenkins Pipeline Success](Screenshots/jenkins-pipeline.png)
-![Jenkins Pipeline Success](Screenshots/jenkins-pipeline2.png)
 ---
 
 # Future Improvements
 
-- Jenkins Pipeline using Jenkinsfile
-- Docker Hub integration
-- Automated testing
+Possible future enhancements include:
+
+- Jenkins deployment directly to Kubernetes
+- Docker Hub image publishing
 - GitHub Webhooks
-- Deployment to Kubernetes
+- HTTPS with Kubernetes Ingress
+- Horizontal Pod Autoscaler
+- Multiple application replicas
+- Prometheus application metrics using `prometheus_client`
 
 ---
 

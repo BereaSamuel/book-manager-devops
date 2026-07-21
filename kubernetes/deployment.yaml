@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: book-manager
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: book-manager
+
+  template:
+    metadata:
+      labels:
+        app: book-manager
+
+    spec:
+      containers:
+        - name: book-manager
+          image: book-manager:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
