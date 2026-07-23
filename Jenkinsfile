@@ -41,7 +41,12 @@ pipeline {
                     docker run -d \
                       --name book-manager-pipeline-container \
                       -p 5002:5000 \
-                      -v "$(pwd)/books.db:/app/books.db" \
+                      --add-host=host.docker.internal:host-gateway \
+                      -e DB_HOST=host.docker.internal \
+                      -e DB_PORT=3306 \
+                      -e DB_NAME=book_manager \
+                      -e DB_USER=bookuser \
+                      -e DB_PASSWORD=bookpass \
                       book-manager-pipeline:latest
                 '''
             }
@@ -50,7 +55,7 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 sh '''
-                    sleep 3
+                    sleep 5
                     docker ps
                     curl --fail http://localhost:5002
                 '''
@@ -64,6 +69,7 @@ pipeline {
         }
 
         failure {
+            sh 'docker logs book-manager-pipeline-container || true'
             echo 'Book Manager deployment failed!'
         }
     }

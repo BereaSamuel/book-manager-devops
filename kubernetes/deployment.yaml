@@ -16,10 +16,21 @@ spec:
       labels:
         app: book-manager
 
-    spec:
+  spec:
       containers:
-        - name: book-manager
-          image: book-manager:1.0
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 5000
+      - name: book-manager
+      image: book-manager:1.0
+      imagePullPolicy: Never
+
+      ports:
+        - containerPort: 5000
+
+      volumeMounts:
+        - name: books-db
+          mountPath: /app/books.db
+
+  volumes:
+    - name: books-db
+      hostPath:
+        path: /home/bsamuel/book-manager/books.db
+        type: FileOrCreate

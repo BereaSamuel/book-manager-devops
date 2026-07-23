@@ -1,27 +1,41 @@
 from flask import Flask, render_template, request, redirect
-import sqlite3
+import pymysql
 import os
 
 app = Flask(__name__)
 
-DATABASE = os.getenv("DATABASE_PATH", "books.db")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = int(os.getenv("DB_PORT", "3306"))
+DB_NAME = os.getenv("DB_NAME", "book_manager")
+DB_USER = os.getenv("DB_USER", "bookuser")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "bookpass")
 
-def init_db():
-    conn = sqlite3.connect(DATABASE)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS books (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            author TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-    conn.close()
 
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
+    return pymysql.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME,
+        cursorclass=pymysql.cursors.DictCursor,
+        autocommit=True
+    )
+
+
+def init_db():
+    conn = get_db_connection()
+
+    with conn.cursor() as cursor:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS books (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                author VARCHAR(255) NOT NULL
+            )
+        """)
+
+    conn.close()
 
 
 @app.route("/")
@@ -29,9 +43,9 @@ def home():
 
     conn = get_db_connection()
 
-    books = conn.execute(
-        "SELECT * FROM books"
-    ).fetchall()
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT * FROM books")
+        books = cursor.fetchall()
 
     conn.close()
 
@@ -49,12 +63,12 @@ def add_book():
 
     conn = get_db_connection()
 
-    conn.execute(
-        "INSERT INTO books (title, author) VALUES (?, ?)",
-        (title, author)
-    )
+    with conn.cursor() as cursor:
+        cursor.execute(
+            "INSERT INTO books (title, author) VALUES (%s, %s)",
+            (title, author)
+        )
 
-    conn.commit()
     conn.close()
 
     return redirect("/")
@@ -65,25 +79,29 @@ def delete_book(book_id):
 
     conn = get_db_connection()
 
-    conn.execute(
-        "DELETE FROM books WHERE id = ?",
-        (book_id,)
-    )
+    with conn.cursor() as cursor:
+        cursor.execute(
+            "DELETE FROM books WHERE id = %s",
+            (book_id,)
+        )
 
-    conn.commit()
     conn.close()
 
     return redirect("/")
+
 
 @app.route("/edit/<int:book_id>")
 def edit_book(book_id):
 
     conn = get_db_connection()
 
-    book = conn.execute(
-        "SELECT * FROM books WHERE id = ?",
-        (book_id,)
-    ).fetchone()
+    with conn.cursor() as cursor:
+        cursor.execute(
+            "SELECT * FROM books WHERE id = %s",
+            (book_id,)
+        )
+
+        book = cursor.fetchone()
 
     conn.close()
 
@@ -101,19 +119,22 @@ def update_book(book_id):
 
     conn = get_db_connection()
 
-    conn.execute(
-        """
-        UPDATE books
-        SET title = ?, author = ?
-        WHERE id = ?
-        """,
-        (title, author, book_id)
-    )
+    with conn.cursor() as cursor:
+        cursor.execute(
+            """
+            UPDATE books
+            SET title = %s,
+                author = %s
+            WHERE id = %s
+            """,
+            (title, author, book_id)
+        )
 
-    conn.commit()
     conn.close()
 
     return redirect("/")
+
+
 if __name__ == "__main__":
     init_db()
     app.run(host="0.0.0.0", port=5000)
