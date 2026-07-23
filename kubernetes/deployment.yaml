@@ -16,21 +16,23 @@ spec:
       labels:
         app: book-manager
 
-  spec:
+    spec:
       containers:
-      - name: book-manager
-      image: book-manager:1.0
-      imagePullPolicy: Never
+        - name: book-manager
+          image: book-manager:2.0
+          imagePullPolicy: Never
 
-      ports:
-        - containerPort: 5000
+          ports:
+            - containerPort: 5000
 
-      volumeMounts:
-        - name: books-db
-          mountPath: /app/books.db
-
-  volumes:
-    - name: books-db
-      hostPath:
-        path: /home/bsamuel/book-manager/books.db
-        type: FileOrCreate
+          env:
+            - name: DB_HOST
+              value: "host.minikube.internal"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: "book_manager"
+            - name: DB_USER
+              value: "bookuser"
+            - name: DB_PASSWORD
+              value: "bookpass"

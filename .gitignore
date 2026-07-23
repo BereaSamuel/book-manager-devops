@@ -8,3 +8,8 @@ books.db
 *.log
 
 .env
+
+*.backup
+*_backup.py
+requirements_backup.txt
+kubernetes_backup/
