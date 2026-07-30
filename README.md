@@ -1,16 +1,5 @@
 # 📚 Book Manager - DevOps Project
 
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![Flask](https://img.shields.io/badge/Flask-3.x-green)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
-![Jenkins](https://img.shields.io/badge/Jenkins-CI/CD-red)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-Minikube-326CE5)
-![Prometheus](https://img.shields.io/badge/Monitoring-Prometheus-orange)
-![Grafana](https://img.shields.io/badge/Dashboard-Grafana-F46800)
-![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1)
-
----
-
 # 📖 Project Overview
 
 **Book Manager** is a web application developed using **Python** and **Flask** for managing a collection of books.
